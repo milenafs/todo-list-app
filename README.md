@@ -1,6 +1,7 @@
 # To-do List App
+This is a simple flutter project that aloows
 
-A new Flutter project.
+Followed this tutorial: https://www.youtube.com/watch?v=K4P5DZ9TRns
 
 ## Getting Started
 

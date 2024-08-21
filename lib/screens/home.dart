@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:confetti/confetti.dart';
 
 import '../model/todo.dart';
 import '../constants/colors.dart';
@@ -15,11 +16,28 @@ class _HomeState extends State<Home> {
   final todosList = ToDo.todoList();
   List<ToDo> _foundToDo = [];
   final _todoController = TextEditingController();
+  late ConfettiController _confettiController;
 
   @override
   void initState() {
     _foundToDo = todosList;
+    _confettiController =
+        ConfettiController(duration: const Duration(seconds: 10));
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _confettiController.dispose();
+    super.dispose();
+  }
+
+  void _throwConfetti() {
+    print('Throwing Confetti');
+    _confettiController.play();
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      _confettiController.stop();
+    });
   }
 
   @override
@@ -121,6 +139,22 @@ class _HomeState extends State<Home> {
               ),
             ]),
           ),
+          Align(
+            alignment: Alignment.center,
+            child: ConfettiWidget(
+              confettiController: _confettiController,
+              blastDirectionality: BlastDirectionality.explosive,
+              shouldLoop: false,
+              colors: const [
+                Colors.red,
+                Colors.blue,
+                Colors.green,
+                Colors.yellow,
+                Colors.purple,
+                Colors.orange,
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -130,7 +164,8 @@ class _HomeState extends State<Home> {
     setState(() {
       todo.isDone = !todo.isDone;
       if (todo.isDone) {
-        // TODO: Throw confetti
+        print('CONFETTI');
+        _throwConfetti();
       }
     });
   }
