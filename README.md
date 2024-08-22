@@ -1,5 +1,8 @@
 # Flutter To-Do List App
 
+- 📱 [Download the app here!](https://github.com/milenafs/todo-list-app/actions/runs/10511418707/artifacts/1843130323)
+- 💻 [Web view here!](https://milenafs.github.io/todo-list-app/)
+
 ### 📡 **Project Overview:**
 This Flutter app is a simple and minimalist to-do list application that allows users to manage their daily tasks effectively. The core functionalities include the ability to add new tasks, delete tasks, and mark tasks as completed. The design of the app is intentionally clean and minimalistic, focusing on usability and a distraction-free user experience.
 
