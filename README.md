@@ -57,3 +57,20 @@ flutter devices
 flutter run -d chrome
 ```
 This will build and serve your Flutter project on a local web server, and it will open the default web browser to display your application.
+
+## Useful Flutter Commands
+
+```sh
+flutter pub get
+```
+Baixa e instala as dependências especificadas no arquivo pubspec.yaml.
+
+```sh
+flutter --version
+```
+Este comando mostrará a versão atual do Flutter instalada no seu sistema, bem como outras informações sobre o Dart SDK e as ferramentas instaladas.
+
+```sh
+flutter doctor
+```
+Este comando fornece um diagnóstico do seu ambiente de desenvolvimento Flutter e inclui a versão do Flutter instalada.
