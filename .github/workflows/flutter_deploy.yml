@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        platform: [android, web]
+        platform: [android]
 
     steps:
       - name: Checkout repository
@@ -39,8 +39,8 @@ jobs:
         if: matrix.platform == 'android'
         uses: actions/upload-artifact@v2
         with:
-          name: android-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: to-make-apk
+          path: build/app/outputs/flutter-apk/to-make-release.apk
 
       # - name: Build for Web
       #   if: matrix.platform == 'web'
