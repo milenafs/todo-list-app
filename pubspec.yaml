@@ -34,7 +34,7 @@ dependencies:
   path: ^1.8.0
   confetti: ^0.6.0
   vibration: ^1.7.4
-  audioplayers: ^0.20.1
+  audioplayers: ^5.2.1
   video_player: ^2.2.5
 
 

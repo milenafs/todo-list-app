@@ -89,3 +89,8 @@ flutter build linux
 sudo env "PATH=$PATH" flutter run -d linux
 ```
 To run the flutter application on linux device
+
+```sh
+flutter pub outdated
+```
+This command will provide a list of all dependencies and indicate whether they are up-to-date, have newer versions available, or are outdated.
