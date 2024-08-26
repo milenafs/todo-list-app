@@ -21,6 +21,7 @@ class _HomeState extends State<Home> {
   List<ToDo> _foundToDo = [];
   final _todoController = TextEditingController();
   late ConfettiController _confettiController;
+  late AudioPlayer player = AudioPlayer();
 
   @override
   void initState() {
@@ -28,6 +29,17 @@ class _HomeState extends State<Home> {
     _confettiController =
         ConfettiController(duration: const Duration(seconds: 10));
     _loadToDos();
+
+     // Create the audio player.
+    player = AudioPlayer();
+
+    // Set the release mode to keep the source after playback has completed.
+    player.setReleaseMode(ReleaseMode.stop);
+
+    // Start the player as soon as the app is displayed.
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await player.setSource(AssetSource('assets/sounds/todo-completed.wav'));
+    });
   }
 
   Future<void> _loadToDos() async {
@@ -241,10 +253,8 @@ class _HomeState extends State<Home> {
     if (await Vibration.hasVibrator() ?? false) {
       Vibration.vibrate(duration: duration);
     }
-    // Create an instance of AudioCache
-    final player = AudioCache(prefix: 'assets/sounds/');
     // Play the sound
-    await player.play('todo-completed.wav');
+    await player.resume();
   }
 
   void _deleteToDoItem(String id) {
