@@ -5,12 +5,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34 // Update to SDK 34
 
     defaultConfig {
         applicationId "com.example.todo_list"
         minSdkVersion 21
-        targetSdkVersion 33
+        targetSdkVersion 34 // Update to SDK 34
         versionCode 1
         versionName "1.0"
     }
