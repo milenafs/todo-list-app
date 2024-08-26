@@ -35,13 +35,13 @@ jobs:
           name: android-apk
           path: build/app/outputs/flutter-apk/app-release.apk
 
-      - name: Build for Web
-        if: matrix.platform == 'web'
-        run: flutter build web --release
+      # - name: Build for Web
+      #   if: matrix.platform == 'web'
+      #   run: flutter build web --release
 
-      - name: Deploy to GitHub Pages
-        if: matrix.platform == 'web'
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: web
+      # - name: Deploy to GitHub Pages
+      #   if: matrix.platform == 'web'
+      #   uses: peaceiris/actions-gh-pages@v3
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     publish_dir: web
