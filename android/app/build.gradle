@@ -5,16 +5,23 @@ plugins {
 }
 
 android {
-    compileSdkVersion 34 // Update to SDK 34
+    compileSdkVersion 30
 
     defaultConfig {
-        applicationId "com.example.todo_list"
-        minSdkVersion 21
-        targetSdkVersion 34 // Update to SDK 34
+        applicationId "com.example.yourapp"
+        minSdkVersion 16
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = "11"
+    }
     buildTypes {
         release {
             minifyEnabled true // Enable code shrinking
