@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        platform: [android, web]
+        platform: [android]
 
     steps:
       - name: Checkout source code
