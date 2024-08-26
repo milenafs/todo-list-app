@@ -74,3 +74,15 @@ Este comando mostrará a versão atual do Flutter instalada no seu sistema, bem 
 flutter doctor
 ```
 Este comando fornece um diagnóstico do seu ambiente de desenvolvimento Flutter e inclui a versão do Flutter instalada.
+
+```sh
+# Clean the build directory
+flutter clean
+
+# Rebuild the project for Linux
+flutter build linux
+
+# Run the application
+sudo env "PATH=$PATH" flutter run -d linux
+```
+To run the flutter application on linux device

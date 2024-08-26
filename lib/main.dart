@@ -1,9 +1,13 @@
+import 'package:ToCheck/screens/home.dart';
+import 'package:ToCheck/screens/opening.dart';
+import 'package:ToCheck/services/todo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:todo_list/screens/home.dart';
+import 'package:audioplayers/audioplayers.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -16,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'To-do App',
-      home: Home(),
+      home: VideoScreen(),
     );
   }
 }

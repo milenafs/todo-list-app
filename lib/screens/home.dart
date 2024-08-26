@@ -1,5 +1,9 @@
+import 'package:ToCheck/services/todo.dart';
 import 'package:flutter/material.dart';
 import 'package:confetti/confetti.dart';
+import 'package:vibration/vibration.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../model/todo.dart';
 import '../constants/colors.dart';
@@ -13,17 +17,31 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final todosList = ToDo.todoList();
+  List<ToDo> todosList = [];
   List<ToDo> _foundToDo = [];
   final _todoController = TextEditingController();
   late ConfettiController _confettiController;
 
   @override
   void initState() {
-    _foundToDo = todosList;
+    super.initState();
     _confettiController =
         ConfettiController(duration: const Duration(seconds: 10));
-    super.initState();
+    _loadToDos();
+  }
+
+  Future<void> _loadToDos() async {
+    todosList = await ToDoService.readToDos() as List<ToDo>;
+    setState(() {
+      _foundToDo = todosList;
+    });
+  }
+
+  void _updateToDoList() {
+    // setState(() {
+    //   // Update the todoList
+    // });
+    ToDoService.writeToDos(todosList);
   }
 
   @override
@@ -52,7 +70,7 @@ class _HomeState extends State<Home> {
             child: Column(
               children: [
                 Container(
-                  color: tdBlue,
+                  color: tdPrimary,
                   padding: EdgeInsets.symmetric(
                     horizontal: 20,
                     vertical: 15,
@@ -67,11 +85,37 @@ class _HomeState extends State<Home> {
                       vertical: 15,
                     ),
                     children: [
-                      for (ToDo todoo in _foundToDo.reversed)
+                      for (ToDo todoo in _foundToDo
+                        ..sort((a, b) {
+                          // If both don't have a start date, compare by isDone status
+                          if (a.isDone && !b.isDone) return 1;
+                          if (!a.isDone && b.isDone) return -1;
+
+                          // First, compare by favorite status
+                          if (a.isFavorited && !b.isFavorited) return -1;
+                          if (!a.isFavorited && b.isFavorited) return 1;
+
+                          // Then, compare by start date
+                          if (a.startDate != null && b.startDate != null) {
+                            return a.startDate!.compareTo(b.startDate!);
+                          }
+
+                          // If one of the todos doesn't have a start date, it comes after
+                          if (a.startDate == null && b.startDate != null)
+                            return 1;
+                          if (a.startDate != null && b.startDate == null)
+                            return -1;
+
+                          // If both have the same isDone status, they are considered equal
+                          return 0;
+                        }))
                         ToDoItem(
                           todo: todoo,
                           onToDoChanged: _handleToDoChange,
                           onDeleteItem: _deleteToDoItem,
+                          onFavoriteItem: _handleFavoriteItem,
+                          onSetStartDateTime: _handleSetStartDateTime,
+                          onSetEndDateTime: _handleSetEndDateTime,
                         ),
                     ],
                   ),
@@ -121,7 +165,7 @@ class _HomeState extends State<Home> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.all(0),
-                    backgroundColor: tdBlue,
+                    backgroundColor: tdPrimary,
                     minimumSize: Size(60, 60),
                     maximumSize: Size(60, 60),
                     elevation: 10,
@@ -160,30 +204,71 @@ class _HomeState extends State<Home> {
     );
   }
 
+  void _handleFavoriteItem(ToDo todo) {
+    setState(() {
+      todo.isFavorited = !todo.isFavorited;
+    });
+    _updateToDoList();
+  }
+
+  void _handleSetStartDateTime(ToDo todo, DateTime startDate) {
+    setState(() {
+      todo.startDate = startDate;
+    });
+    _updateToDoList();
+  }
+
+  void _handleSetEndDateTime(ToDo todo, DateTime endDate) {
+    setState(() {
+      todo.endDate = endDate;
+    });
+    _updateToDoList();
+  }
+
   void _handleToDoChange(ToDo todo) {
     setState(() {
       todo.isDone = !todo.isDone;
       if (todo.isDone) {
         print('CONFETTI');
         _throwConfetti();
+        _vibratePhone(500);
       }
     });
+    _updateToDoList();
+  }
+
+  void _vibratePhone(int duration) async {
+    if (await Vibration.hasVibrator() ?? false) {
+      Vibration.vibrate(duration: duration);
+    }
+    // Create an instance of AudioCache
+    final player = AudioCache(prefix: 'assets/sounds/');
+    // Play the sound
+    await player.play('todo-completed.wav');
   }
 
   void _deleteToDoItem(String id) {
     setState(() {
       todosList.removeWhere((item) => item.id == id);
     });
+    _updateToDoList();
   }
 
   void _addToDoItem(String toDo) {
     setState(() {
-      todosList.add(ToDo(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        todoText: toDo,
-      ));
+      final newToDo = ToDo(
+        id: DateTime.now().toString(),
+        todoText: toDo == '' ? 'What should I do?' : toDo,
+        isFavorited: false,
+        isDone: false,
+        startDate: null,
+        endDate: null,
+      );
+      todosList.add(newToDo);
+      _foundToDo = todosList;
+      _todoController.clear();
     });
-    _todoController.clear();
+    _updateToDoList();
   }
 
   void _runFilter(String enteredKeyword) {
@@ -233,7 +318,7 @@ class _HomeState extends State<Home> {
 
   AppBar _buildAppBar() {
     return AppBar(
-      backgroundColor: tdBlue,
+      backgroundColor: tdPrimary,
       elevation: 0,
       title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         Container(

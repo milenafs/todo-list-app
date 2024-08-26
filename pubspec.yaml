@@ -1,4 +1,4 @@
-name: todo_list
+name: ToCheck
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -30,7 +30,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  path_provider: ^2.0.2
+  path: ^1.8.0
   confetti: ^0.6.0
+  vibration: ^1.7.4
+  audioplayers: ^0.20.1
+  video_player: ^2.2.5
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -40,6 +45,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.9.2
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -62,6 +68,10 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/logo.svg
+    - assets/images/intro.png
+    - assets/images/intro.gif
+    - assets/sounds/todo-completed.wav
+    - assets/videos/intro.mp4
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -89,3 +99,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/logo.svg"
