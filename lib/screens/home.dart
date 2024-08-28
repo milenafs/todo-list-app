@@ -21,7 +21,7 @@ class _HomeState extends State<Home> {
   List<ToDo> _foundToDo = [];
   final _todoController = TextEditingController();
   late ConfettiController _confettiController;
-  late AudioPlayer player = AudioPlayer();
+  late AudioPlayer player;
 
   @override
   void initState() {
@@ -40,6 +40,20 @@ class _HomeState extends State<Home> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await player.setSource(AssetSource('assets/sounds/todo-completed.wav'));
     });
+  }
+
+  Future<void> playSound(String src) async {
+    try {
+      await player.setSource(AssetSource(src));
+      await player.resume();
+      print("Som reproduzido com sucesso");
+    } catch (e) {
+      print("Falha ao reproduzir o som: $e");
+    }
+  }
+
+  void _completeToDo() {
+    // Tocar o som quando a tarefa for concluída
   }
 
   Future<void> _loadToDos() async {
@@ -165,7 +179,9 @@ class _HomeState extends State<Home> {
                     controller: _todoController,
                     decoration: InputDecoration(
                         hintText: 'Add a new todo item',
-                        border: InputBorder.none),
+                        hintStyle: TextStyle(color: tdGrey),
+                        border: InputBorder.none
+                        ),
                   ),
                 ),
               ),
@@ -254,7 +270,7 @@ class _HomeState extends State<Home> {
       Vibration.vibrate(duration: duration);
     }
     // Play the sound
-    await player.resume();
+    playSound('sounds/todo-completed.wav');
   }
 
   void _deleteToDoItem(String id) {
